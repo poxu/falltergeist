@@ -1,4 +1,13 @@
-.mainmenu
+#wrapper
 {
-    color: #00ff00;
+    width: 1000px;
+    margin: 0 auto;
+}
+
+#mainmenu
+{
+}
+
+#content
+{
 }
