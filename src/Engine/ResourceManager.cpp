@@ -21,6 +21,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 // Falltergeist includes
 #include "../Engine/ResourceManager.h"
@@ -70,17 +71,26 @@ void ResourceManager::extract(std::string path)
         std::vector<libfalltergeist::DatFileItem *>::iterator itt;
         for (itt = (*it)->items()->begin(); itt != (*it)->items()->end(); ++itt)
         {
-            std::string file = path + (*itt)->filename();
-            std::fstream stream;
-            stream.open(file.c_str(), std::ios_base::out);
+            std::string file = path + "/" + (*itt)->filename();
+            std::string path_to_dir = file.substr(0,file.find_last_of("/"));
+            std::replace( path_to_dir.begin(), path_to_dir.end(), '/', '\\');
+            std::cout << path_to_dir << std::endl;
 
-            if (stream.is_open())
-            {
-                //stream.write((*itt)->getData(), (*itt)->size());
-                stream.close();
-            }
-            else
-            {
+
+            if (createDirectory(path_to_dir)) {
+                std::ofstream stream;
+                stream.open(file.c_str(), std::ofstream::binary);
+
+                if (stream.is_open())
+                {
+                    std::cout << "file opened" << std::endl;
+                    stream << (*itt);
+                    stream.close();
+                }
+                else
+                {
+                    std::cout << "file not opened" << std::endl;
+                }
             }
         }
     }
@@ -88,6 +98,7 @@ void ResourceManager::extract(std::string path)
 
 ResourceManager::~ResourceManager()
 {
+
     while (!_datFiles->empty())
     {
         delete _datFiles->back();

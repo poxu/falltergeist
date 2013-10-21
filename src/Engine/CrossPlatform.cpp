@@ -38,6 +38,25 @@ namespace Falltergeist
 namespace CrossPlatform
 {
 
+bool createDirectory(std::string path) {
+#if defined(_WIN32)
+    int res = SHCreateDirectoryEx(NULL, path.c_str(), NULL);
+
+    if (res == ERROR_BAD_PATHNAME) {
+        std::cout << "bad pathname" << std::endl;
+    } 
+    else if (res == ERROR_PATH_NOT_FOUND) {
+        std::cout << "path not found" << std::endl;
+    }
+    else if (res == ERROR_SUCCESS) {
+        std::cout << path << " created" << std::endl;
+
+        return true;
+    }
+
+#endif
+}
+
 void debug(std::string message, unsigned char level)
 {
     std::cout << message;

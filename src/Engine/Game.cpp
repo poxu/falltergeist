@@ -73,6 +73,7 @@ Game::~Game()
     delete _player;
     delete _screen;
     delete _mouse;
+    delete _resourceManager;
 
     while (!_states->empty())
     {

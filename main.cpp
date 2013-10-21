@@ -38,9 +38,10 @@ int main(int argc, char *argv[])
         //std::cout << lst << std::endl;
         //return 0;
 
-        Game * game = new Game(640,480,32);
-        game->setState(new StartState(game));
-        game->run();
+        Game game(640,480,32);
+        game.setState(new StartState(&game));
+        game.run();
+        
         return 0;
 
     }
